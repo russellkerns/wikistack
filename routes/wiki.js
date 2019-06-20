@@ -3,6 +3,7 @@ const router = express.Router();
 const { addPage } = require("../views");
 
 const { Page } = require("../models");
+const wikiPage = require("../views/wikipage");
 
 router.get("/", (req, res, next) => {
   try {
@@ -18,13 +19,12 @@ router.post("/", async (req, res, next) => {
     content: req.body.content
   });
 
-
   // make sure we only redirect *after* our save is complete!
   // note: `.save` returns a promise.
   try {
     await page.save();
-    const test = await page
-    console.log(page.dataValues)
+    const test = await page;
+    // console.log(page.dataValues);
     res.redirect("/");
   } catch (error) {
     next(error);
@@ -39,16 +39,17 @@ router.get("/add", (req, res, next) => {
   }
 });
 
-async function getAllPage(){
-  const allValuesInPage = await Page.findAll();
-  console.log(allValuesInPage)
-}
-
-
-
-router.get('/:slug', (req, res, next) => {
-  getAllPage()
-  res.send(`hit dynamic route at ${req.params.slug}`);
+router.get("/:slug", async (req, res, next) => {
+  try {
+    const page = await Page.findOne({
+      where: {
+        slug: req.params.slug
+      }
+    });
+    res.json(wikiPage(page));
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

@@ -14,11 +14,7 @@ module.exports = pages =>
     </form>
     <hr />
     <ul class="list-unstyled">
-      <ul id="page-links">
-        ${
-          //map
-        }
-      </ul>
+        ${pages.map(page => html`<li>${page.title}</li>`)}
     </ul>
   `);
 

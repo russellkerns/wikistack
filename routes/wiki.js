@@ -8,6 +8,7 @@ const mainHTML = require("../views/main");
 router.get("/", async (req, res, next) => {
   try {
     const allPages = await Page.findAll();
+    //console.log('All pages from db:', allPages)
     res.send(mainHTML(allPages));
   } catch (err) {
     console.log("error");

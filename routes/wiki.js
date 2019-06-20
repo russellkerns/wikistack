@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { addPage } = require("../views");
+const { Page } = require("../models");
 
 router.get("/", (req, res, next) => {
   try {
@@ -10,11 +11,19 @@ router.get("/", (req, res, next) => {
   }
 });
 
-router.post("/", (req, res, next) => {
+router.post("/", async (req, res, next) => {
+  const page = new Page({
+    title: req.body.title,
+    content: req.body.content
+  });
+
+  // make sure we only redirect *after* our save is complete!
+  // note: `.save` returns a promise.
   try {
-    res.json(req.body);
-  } catch (err) {
-    console.log("error");
+    await page.save();
+    res.redirect("/");
+  } catch (error) {
+    next(error);
   }
 });
 
@@ -25,5 +34,9 @@ router.get("/add", (req, res, next) => {
     console.log("error");
   }
 });
+
+function slugGenerator(title) {
+  title.replace(/\s+/g, "_").replace(/\W/g, "");
+}
 
 module.exports = router;

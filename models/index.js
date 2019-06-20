@@ -3,6 +3,10 @@ const db = new Sequelize("postgres://localhost:5432/wikistack", {
   logging: false
 });
 
+function slugGenerator(title) {
+  return title.replace(/\s+/g, "_").replace(/\W/g, "");
+}
+
 const Page = db.define("page", {
   title: {
     type: Sequelize.STRING,
@@ -20,6 +24,11 @@ const Page = db.define("page", {
     type: Sequelize.ENUM("open", "closed")
     // defaultValue: "open"
   }
+});
+
+Page.beforeValidate(function(page, options) {
+  page.slug = slugGenerator(page.title);
+  return Sequelize.Promise.resolve(page);
 });
 
 const User = db.define("user", {

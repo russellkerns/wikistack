@@ -22,9 +22,9 @@ app.use("/user", userRouter);
 
 app.get("/", (req, res, next) => {
   try {
-    res.send("hello world");
+    res.redirect('/wiki')
   } catch (err) {
-    console.log("error");
+    res.status(404);
   }
 });
 

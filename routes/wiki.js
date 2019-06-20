@@ -12,7 +12,7 @@ router.get("/", (req, res, next) => {
 
 router.post("/", (req, res, next) => {
   try {
-    res.send("//");
+    res.json(req.body);
   } catch (err) {
     console.log("error");
   }

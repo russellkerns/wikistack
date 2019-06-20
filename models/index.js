@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const db = new Sequelize("postgres://localhost:5432/wikistack", {
-  logging:false
+  logging: false
 });
 
 const Page = db.define("page", {
@@ -18,6 +18,7 @@ const Page = db.define("page", {
   },
   status: {
     type: Sequelize.ENUM("open", "closed")
+    // defaultValue: "open"
   }
 });
 
@@ -28,10 +29,11 @@ const User = db.define("user", {
   },
   email: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      isEmail: true
+    }
   }
 });
 
-
-
-module.exports = { db };
+module.exports = { db, Page, User };

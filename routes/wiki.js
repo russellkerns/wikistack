@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { addPage } = require("../views");
-const { Page } = require("../models");
+const { Page, User } = require("../models");
 const wikiPage = require("../views/wikipage");
 const mainHTML = require("../views/main");
 
@@ -20,11 +20,25 @@ router.post("/", async (req, res, next) => {
     title: req.body.title,
     content: req.body.content
   });
+  // const user = await User.findOrCreate(
+  //   {where: {name:req.body.name}}
+
+  const user = new User({
+    name: req.body.name,
+    email: req.body.email
+  });
 
   // make sure we only redirect *after* our save is complete!
   // note: `.save` returns a promise.
   try {
+    const author = await User.findOrCreate({
+      where: { name: req.body.name, email: req.body.email }
+    });
     await page.save();
+    if (author[1] !== false) {
+      await user.save();
+    }
+
     res.redirect(`/wiki/${page.slug}`);
   } catch (error) {
     next(error);

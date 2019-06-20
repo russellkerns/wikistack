@@ -1,7 +1,6 @@
 const html = require("html-template-tag");
 const layout = require("./layout");
 
-
 //const moduleLoop =
 
 module.exports = pages =>
@@ -14,7 +13,11 @@ module.exports = pages =>
     </form>
     <hr />
     <ul class="list-unstyled">
-        ${pages.map(page => html`<li>${page.title}</li>`)}
+      ${pages.map(page => {
+        return html`
+          <li><a href="/wiki/${page.slug}">'${page.title}'</a></li>
+        `;
+      })}
     </ul>
   `);
 

@@ -1,6 +1,6 @@
 const html = require("html-template-tag");
 const layout = require("./layout");
-//const
+
 
 //const moduleLoop =
 
@@ -15,7 +15,9 @@ module.exports = pages =>
     <hr />
     <ul class="list-unstyled">
       <ul id="page-links">
-        <!-- PLACEHOLDER LIST OF PAGES -->
+        ${
+          //map
+        }
       </ul>
     </ul>
   `);

@@ -23,9 +23,7 @@ router.post("/", async (req, res, next) => {
   // note: `.save` returns a promise.
   try {
     await page.save();
-    const test = await page;
-    // console.log(page.dataValues);
-    res.redirect("/");
+    res.redirect(`/wiki/${page.slug}`);
   } catch (error) {
     next(error);
   }
@@ -46,7 +44,7 @@ router.get("/:slug", async (req, res, next) => {
         slug: req.params.slug
       }
     });
-    res.json(wikiPage(page));
+    res.send(wikiPage(page));
   } catch (error) {
     next(error);
   }

@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const { addPage } = require("../views");
-
 const { Page } = require("../models");
 const wikiPage = require("../views/wikipage");
+const mainHTML = require("../views/main");
 
-router.get("/", (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
-    res.send("//");
+    const allPages = await Page.findAll();
+    res.send(mainHTML(allPages));
   } catch (err) {
     console.log("error");
   }

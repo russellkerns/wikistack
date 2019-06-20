@@ -16,28 +16,33 @@ router.get("/", async (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
-  const page = new Page({
-    title: req.body.title,
-    content: req.body.content
-  });
-  // const user = await User.findOrCreate(
-  //   {where: {name:req.body.name}}
 
-  const user = new User({
-    name: req.body.name,
-    email: req.body.email
-  });
+  // const user = await User.findOrCreate(
+  //   {where: {name:req.body.name}
+  // const user = new User({
+  //   name: req.body.name,
+  //   email: req.body.email
+  // });
+
+  // const page = new Page({
+  //   title: req.body.title,
+  //   content: req.body.content,
+  //   authorId: user.id
+  // });
 
   // make sure we only redirect *after* our save is complete!
   // note: `.save` returns a promise.
   try {
-    const author = await User.findOrCreate({
+    const [user, wasCreated]= await User.findOrCreate({
       where: { name: req.body.name, email: req.body.email }
     });
-    await page.save();
-    if (author[1] !== false) {
-      await user.save();
-    }
+    const page = await Page.create(req.body);
+    page.setAuthor(user);
+
+    // await page.save();
+    // if (author[1] !== false) {
+    //   await user.save();
+    // }
 
     res.redirect(`/wiki/${page.slug}`);
   } catch (error) {

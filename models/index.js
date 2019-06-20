@@ -21,8 +21,8 @@ const Page = db.define("page", {
     allowNull: false
   },
   status: {
-    type: Sequelize.ENUM("open", "closed")
-    // defaultValue: "open"
+    type: Sequelize.ENUM("open", "closed"),
+    //defaultValue: "open"
   }
 });
 
